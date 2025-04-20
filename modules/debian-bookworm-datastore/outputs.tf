@@ -6,3 +6,18 @@ output "vm_ip" {
 output "ssh_public_key_path" {
   value = var.ssh_public_key_path
 }
+
+output "vm_name" {
+  description = "Nom de la VM créée"
+  value       = proxmox_virtual_environment_vm.debian_template.name
+}
+
+output "vm_id" {
+  description = "ID de la VM créée"
+  value       = proxmox_virtual_environment_vm.debian_template.vm_id
+}
+
+output "node_name" {
+  description = "Nom du noeud Proxmox où la VM a été créée"
+  value       = proxmox_virtual_environment_vm.debian_template.node_name
+}

@@ -42,3 +42,4 @@ terraform.rc
 credentials.auto.tfvars
 secrets.sh
 .terraform.lock.hcl
+public_keys/bastion.pub

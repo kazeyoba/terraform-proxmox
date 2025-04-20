@@ -17,7 +17,7 @@ variable "node_name" {
 variable "tags" {
   description = "Tags de la VM"
   type        = list(string)
-  default     = ["terraform", "debian12"]
+  default     = ["terraform", "ubuntu-noble"]
 }
 
 variable "cpu_cores" {
@@ -62,7 +62,7 @@ variable "gateway" {
 variable "dns_servers" {
   description = "Liste des serveurs DNS"
   type        = list(string)
-  default     = ["8.8.1.1", "8.8.8.8"]
+  default     = ["172.16.20.254", "8.8.8.8"]
 }
 
 variable "username" {

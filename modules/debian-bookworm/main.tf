@@ -1,9 +1,9 @@
 resource "proxmox_virtual_environment_download_file" "latest_debian_12_bookworm_qcow2_img" {
   content_type = "iso"
   datastore_id = var.datastore_id
-  file_name    = "debian-12-generic-amd64.qcow2.img"
+  file_name    = "vm-${var.vm_id}-disk-0.img"
   node_name    = var.node_name
-  url          = "https://cloud.debian.org/images/cloud/bookworm/latest/debian-12-generic-amd64.qcow2"
+  url          = "https://cloud.debian.org/images/cloud/bookworm/latest/debian-12-generic-amd64.raw"
 }
 
 resource "proxmox_virtual_environment_vm" "debian_template" {
@@ -43,8 +43,9 @@ resource "proxmox_virtual_environment_vm" "debian_template" {
     datastore_id = var.datastore_id
     file_id      = proxmox_virtual_environment_download_file.latest_debian_12_bookworm_qcow2_img.id
     size         = var.disk_size
-    discard      = "on"
+    discard      = "ignore"
     ssd          = false
+    file_format = "raw"
   }
 
   initialization {

@@ -1,4 +1,10 @@
+data "proxmox_virtual_environment_vms" "template" {
+  node_name = "pve"
+  tags      = ["template", "debian12"]
+}
+
 resource "proxmox_virtual_environment_vm" "debian_template" {
+
   description = "Managed by Terraform"
   vm_id       = var.vm_id
   name        = var.vm_name
@@ -31,12 +37,15 @@ resource "proxmox_virtual_environment_vm" "debian_template" {
   }
 
   disk {
-    datastore_id = var.datastore_id
-    file_id      = "NAS:iso/debian-12-generic-amd64.img"
-    interface    = "virtio0"
-    iothread     = true
-    discard      = "ignore"
-    size         = var.disk_size
+    interface   = "scsi0"
+    iothread    = true
+    discard     = "ignore"
+    size        = var.disk_size
+    file_format = "qcow2"
+  }
+
+  clone {
+    vm_id = data.proxmox_virtual_environment_vms.template.vms[0].vm_id
   }
 
   initialization {

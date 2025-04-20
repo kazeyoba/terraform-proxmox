@@ -1,4 +1,12 @@
-resource "proxmox_virtual_environment_vm" "debian_template" {
+resource "proxmox_virtual_environment_download_file" "latest_ubuntu_noble_img" {
+  content_type = "iso"
+  datastore_id = var.datastore_id
+  file_name    = "vm-${var.vm_id}-disk-0.img"
+  node_name    = var.node_name
+  url          = "https://cloud-images.ubuntu.com/noble/20250403/noble-server-cloudimg-amd64.img"
+}
+
+resource "proxmox_virtual_environment_vm" "ubuntu_template" {
   description = "Managed by Terraform"
   vm_id       = var.vm_id
   name        = var.vm_name
@@ -31,12 +39,13 @@ resource "proxmox_virtual_environment_vm" "debian_template" {
   }
 
   disk {
+    interface    = "scsi0"
     datastore_id = var.datastore_id
-    file_id      = "NAS:iso/debian-12-generic-amd64.img"
-    interface    = "virtio0"
-    iothread     = true
-    discard      = "ignore"
+    file_id      = proxmox_virtual_environment_download_file.latest_ubuntu_noble_img.id
     size         = var.disk_size
+    discard      = "on"
+    ssd          = false
+    file_format  = "raw"
   }
 
   initialization {
